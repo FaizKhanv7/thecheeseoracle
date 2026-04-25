@@ -13,8 +13,7 @@ const ORACLE_PROMPT = `You are the world's foremost Cheese Psychologist. When gi
 4. Give a 'Ripeness Level' from 1-10 and what it means (e.g. '7/10 — Boldly aged, slightly overwhelming at parties')
 Format your response in clearly labeled sections. Be dramatic, funny, and oddly specific. Never be boring.`
 
-const GEMINI_URL =
-  'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent'
+const GEMINI_URL = '/api/gemini'
 
 const LOADING_MESSAGES = [
   'Aging your cheese profile...',
@@ -188,8 +187,7 @@ function App() {
   const [isGeneratingHoroscope, setIsGeneratingHoroscope] = useState(false)
   const [runnerHighScore, setRunnerHighScore] = useState(0)
 
-  const apiKey = import.meta.env.VITE_GEMINI_API_KEY
-  const missingKey = !apiKey || apiKey === 'your_key_here'
+  const missingKey = false
   const charCount = useMemo(() => inputText.trim().length, [inputText])
 
   useEffect(() => {
@@ -277,7 +275,7 @@ Be completely earnest and never break character.
 Write for a general audience at about a middle-school reading level.`
 
       try {
-        const response = await fetch(`${GEMINI_URL}?key=${apiKey}`, {
+        const response = await fetch(GEMINI_URL, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -368,7 +366,7 @@ Write for a general audience at about a middle-school reading level.`
     setLoading(true)
     try {
       const prompt = `${ORACLE_PROMPT}\n\nUser description: ${inputText.trim()}`
-      const response = await fetch(`${GEMINI_URL}?key=${apiKey}`, {
+      const response = await fetch(GEMINI_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
