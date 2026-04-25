@@ -187,7 +187,6 @@ function App() {
   const [isGeneratingHoroscope, setIsGeneratingHoroscope] = useState(false)
   const [runnerHighScore, setRunnerHighScore] = useState(0)
 
-  const missingKey = false
   const charCount = useMemo(() => inputText.trim().length, [inputText])
 
   useEffect(() => {
@@ -235,12 +234,6 @@ function App() {
       const cached = localStorage.getItem(getTodayKey())
       if (cached) {
         setHoroscope(JSON.parse(cached))
-        setHoroscopeLoading(false)
-        return
-      }
-
-      if (missingKey) {
-        setHoroscopeError('Add your Gemini API key in .env')
         setHoroscopeLoading(false)
         return
       }
@@ -307,7 +300,7 @@ Write for a general audience at about a middle-school reading level.`
     }
 
     loadHoroscope()
-  }, [apiKey, missingKey, page])
+  }, [page])
 
   useEffect(() => {
     const bumpHistory = () => setHistoryVersion((current) => current + 1)
@@ -354,11 +347,6 @@ Write for a general audience at about a middle-school reading level.`
     if (!inputText.trim()) {
       setShakeInput(true)
       window.setTimeout(() => setShakeInput(false), 420)
-      return
-    }
-
-    if (missingKey) {
-      setError('Add your Gemini API key in .env')
       return
     }
 
@@ -535,9 +523,6 @@ Write for a general audience at about a middle-school reading level.`
                 </button>
               </div>
 
-              {missingKey && !error && (
-                <p className="mt-3 text-sm text-[#A35A2A]">Add your Gemini API key in .env</p>
-              )}
               {error && <p className="mt-3 text-sm text-[#B94A48]">{error}</p>}
             </form>
           </div>
